@@ -4,14 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de Sesión</title>
+
+    <!-- Importación de Bootstrap desde CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
+        /* Configuración general del cuerpo */
         body {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
             background-color: #d6d6d6;
         }
+
+        /* Estilos del encabezado */
         .header {
             background-color: #f8f9fa;
             padding: 15px;
@@ -23,9 +29,12 @@
             align-items: center;
             justify-content: space-between;
         }
+
         .header img {
             height: 50px;
         }
+
+        /* Contenedor principal del contenido */
         .content {
             flex: 1;
             display: flex;
@@ -34,6 +43,8 @@
             padding-top: 80px;
             padding-bottom: 40px;
         }
+
+        /* Caja de inicio de sesión */
         .login-box {
             background: white;
             padding: 30px;
@@ -41,12 +52,16 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
+
+        /* Pie de página */
         .footer {
             background-color: #343a40;
             color: white;
             text-align: center;
             padding: 15px;
         }
+
+        /* Estilos del botón de Google */
         .google-btn {
             background-color: #4285F4;
             color: white;
@@ -59,14 +74,17 @@
             display: inline-block;
             margin-top: 10px;
         }
+
         .google-btn:hover {
             background-color: #357ae8;
         }
     </style>
 </head>
 <body>
+
+    <!-- Encabezado con logotipo y menú de navegación -->
     <header class="header">
-    <img src="{{ asset('img/logo.jpg') }}" alt="Logo">
+        <img src="{{ asset('img/logo.jpg') }}" alt="Logo">
 
         <nav>
             <a href="#" class="mx-2 text-dark">Inicio</a>
@@ -74,7 +92,8 @@
             <a href="#" class="mx-2 text-dark">Contacto</a>
         </nav>
     </header>
-    
+
+    <!-- Contenido principal con la caja de inicio de sesión -->
     <main class="content">
         <div class="login-box">
             <h2>Bienvenido</h2>
@@ -84,11 +103,15 @@
             </a>
         </div>
     </main>
-    
+
+    <!-- Pie de página -->
     <footer class="footer">
         &copy; 2025 Mi Aplicación. Todos los derechos reservados.
     </footer>
-    
+
+    <!-- Importación del script de Bootstrap desde CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
+

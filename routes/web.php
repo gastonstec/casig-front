@@ -1,56 +1,74 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AsignacionController;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\UsuarioController;
-use App\Http\Controllers\AsignacionController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
 | Aquí se registran las rutas web de la aplicación.
+| Se definen rutas para autenticación con Google, manejo de sesiones
+| y consulta de usuarios, entre otros.
 |
 */
 
-// Página de bienvenida (puedes cambiarla según tu proyecto)
+/**
+ * Ruta de inicio.
+ * Carga la vista de bienvenida.
+ */
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Redirección a Google para autenticación
+/**
+ * Redirección a Google para autenticación con OAuth2.
+ * Usa Socialite para manejar la autenticación con Google.
+ */
 Route::get('/auth/redirect/google', function () {
     return Socialite::driver('google')->redirect();
 });
 
-// Callback de Google (manejo de autenticación)
+/**
+ * Callback de Google después de la autenticación.
+ * Obtiene los datos del usuario autenticado y lo registra en la base de datos si no existe.
+ * Luego, lo autentica en la sesión de Laravel y lo redirige al dashboard.
+ */
 Route::get('/auth/callback/google', function () {
     try {
-        $googleUser = Socialite::driver('google')->user(); // Eliminamos stateless() si causa problemas
+        // Obtener datos del usuario autenticado en Google
+        $googleUser = Socialite::driver('google')->user();
 
-        // Buscar al usuario en la base de datos o crearlo si no existe
+        // Buscar o crear el usuario en la base de datos
         $user = User::firstOrCreate(
-            ['email' => $googleUser->getEmail()],
+            ['email' => $googleUser->getEmail()], // Criterio de búsqueda
             [
                 'name' => $googleUser->getName(),
                 'google_id' => $googleUser->getId(),
-                'password' => bcrypt('default_password'), // Solo porque es requerido
+                'password' => bcrypt('default_password'), // Contraseña por defecto (no usada)
             ]
         );
 
-        // Autenticar al usuario en Laravel
+        // Iniciar sesión en Laravel con el usuario autenticado
         Auth::login($user);
 
-        return redirect('/dashboard'); // Redirige al dashboard después de iniciar sesión
+        // Redirigir al dashboard
+        return redirect('/dashboard');
 
     } catch (\Exception $e) {
         return redirect('/')->with('error', 'Error al autenticar con Google.');
     }
 });
 
-// Ruta protegida para el Dashboard (solo usuarios autenticados)
+/**
+ * Ruta del Dashboard.
+ * Solo accesible para usuarios autenticados.
+ */
 Route::get('/dashboard', function () {
     if (Auth::check()) {
         return "Bienvenido, " . Auth::user()->name . "!";
@@ -58,15 +76,38 @@ Route::get('/dashboard', function () {
     return redirect('/');
 })->middleware('auth');
 
-// Cerrar sesión
+/**
+ * Cierra la sesión del usuario y lo redirige a la página de inicio.
+ */
 Route::get('/logout', function () {
     Auth::logout();
     return redirect('/');
 });
+
+/**
+ * Ruta de la vista de administrador.
+ * Solo carga la vista sin consultar la base de datos.
+ */
 Route::get('/admin', function () {
     return view('admi');
 });
-//usuario
-Route::get('/usuario/{id}', [UsuarioController::class, 'obtenerUsuario']);
 
-route::get('/admin', [AsignacionController::class, 'index']);
+/**
+ * Obtiene un usuario desde la API por su ID.
+ * Llama al método `getUserById` en `UserController`.
+ */
+Route::get('/SnowGetUserId', [UserController::class, 'getUserById']);
+
+/**
+ * Obtiene un usuario específico por su ID desde la base de datos.
+ * Llama al método `getUsuario` en `AsignacionController`.
+ */
+Route::get('/usuario/{id}', [AsignacionController::class, 'getUsuario']);
+
+/**
+ * Ruta para la vista de asignación de equipos.
+ * Solo carga la vista sin interactuar con la base de datos.
+ */
+Route::get('/asignacion', function () {
+    return view('admi');
+});
