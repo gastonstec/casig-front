@@ -6,7 +6,7 @@
     <title>Control de Asignación de Equipos</title>
 
     <!-- Importación de Bootstrap desde los archivos locales -->
-    <link href="<?php echo e(asset('bootstrap.min.css')); ?>" rel="stylesheet">
+    <link href="{{ asset('bootstrap.min.css') }}" rel="stylesheet">
 
     <style>
        /* Configuración general del cuerpo */
@@ -113,7 +113,7 @@
 
     <!-- Encabezado con logotipo -->
     <header class="header">
-        <img src="<?php echo e(asset('img/logo.jpg')); ?>" alt="Logo">
+        <img src="{{ asset('img/logo.jpg') }}" alt="Logo">
     </header>
 
     <!-- Contenedor principal -->
@@ -254,4 +254,3 @@
     </script>
 </body>
 </html>
-<?php /**PATH C:\xampp\htdocs\casig-front\resources\views/admi.blade.php ENDPATH**/ ?>

@@ -84,7 +84,7 @@
 
     <!-- Encabezado con logotipo y menú de navegación -->
     <header class="header">
-        <img src="<?php echo e(asset('img/logo.jpg')); ?>" alt="Logo">
+        <img src="{{ asset('img/logo.jpg') }}" alt="Logo">
 
         <nav>
             <a href="#" class="mx-2 text-dark">Inicio</a>
@@ -98,7 +98,7 @@
         <div class="login-box">
             <h2>Bienvenido</h2>
             <p>Por favor, inicia sesión para continuar</p>
-            <a href="<?php echo e(url('/auth/redirect/google')); ?>" class="google-btn">
+            <a href="{{ url('/auth/redirect/google') }}" class="google-btn">
                 Iniciar sesión con Google
             </a>
         </div>
@@ -115,4 +115,3 @@
 </body>
 </html>
 
-<?php /**PATH C:\xampp\htdocs\casig-front\resources\views/welcome.blade.php ENDPATH**/ ?>
