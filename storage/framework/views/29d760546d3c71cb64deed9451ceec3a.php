@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control de Asignación de Equipos</title>
 
-    <!-- Importación de Bootstrap desde los archivos locales -->
+    <!-- Importing Bootstrap from local files -->
     <link href="<?php echo e(asset('bootstrap.min.css')); ?>" rel="stylesheet">
 
     <style>
-       /* Configuración general del cuerpo */
+       /* General body settings */
        body {
             display: flex;
             flex-direction: column;
@@ -17,7 +17,7 @@
             background-color: #d6d6d6;
         }
 
-        /* Estilos del encabezado */
+        /* Header styles */
         .header {
             background-color: #f8f9fa;
             padding: 10px;
@@ -36,7 +36,7 @@
             height: 40px;
         }
 
-        /* Contenedor principal */
+        /* Main content container */
         .content {
             flex: 1;
             display: flex;
@@ -55,7 +55,7 @@
             max-width: 1600px;
         }
 
-        /* Contenedor del formulario */
+        /* Form container */
         .form-container {
             display: flex;
             flex-wrap: wrap;
@@ -73,7 +73,7 @@
             padding: 5px;
         }
 
-        /* Pie de página */
+        /* Footer styles */
         .footer {
             background-color: #343a40;
             color: white;
@@ -91,7 +91,7 @@
             font-size: 0.9rem;
         }
 
-        /* Mensaje de error */
+        /* Error message styles */
         #error-message {
             display: none;
             font-size: 0.9rem;
@@ -111,40 +111,40 @@
 </head>
 <body>
 
-    <!-- Encabezado con logotipo -->
+    <!-- Header with logo -->
     <header class="header">
         <img src="<?php echo e(asset('img/logo.jpg')); ?>" alt="Logo">
     </header>
 
-    <!-- Contenedor principal -->
+    <!-- Main container -->
     <main class="content">
         <div class="container-box">
             <h2 class="text-center">Control de Asignación de Equipos</h2>
 
-            <!-- Formulario de asignación -->
+            <!-- Assignment form -->
             <form>
                 <div class="form-container">
-                    <!-- Mensaje de error para ID no encontrado -->
+                    <!-- Error message for unknown ID -->
                     <div id="error-message">El ID ingresado no existe.</div>
 
-                    <!-- Campo de entrada para User ID -->
+                    <!-- User ID input field -->
                     <div class="form-group">
                         <label class="form-label">User ID</label>
                         <input type="text" class="form-control" id="userId" placeholder="Ingrese el ID del usuario">
                     </div>
 
-                    <!-- Campos de información del usuario -->
+                    <!-- User information fields -->
                     <div class="form-group">
                         <label class="form-label">Nombre de Usuario</label>
-                        <input type="text" class="form-control" id="nombre" disabled>
+                        <input type="text" class="form-control" id="name" disabled>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Correo</label>
-                        <input type="email" class="form-control" id="correo" disabled>
+                        <input type="email" class="form-control" id="email" disabled>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Ubicación</label>
-                        <input type="text" class="form-control" id="ubicacion" disabled>
+                        <input type="text" class="form-control" id="location" disabled>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Call Center</label>
@@ -160,11 +160,11 @@
                     </div>
                 </div>
 
-                <!-- Selección de técnico y dispositivo -->
+                <!-- Technician and device selection -->
                 <h4>Técnico</h4>
                 <div class="form-group">
                     <label class="form-label">Técnico que entregará</label>
-                    <select class="form-select" id="tecnico">
+                    <select class="form-select" id="technician">
                         <option selected>Seleccione un técnico</option>
                     </select>
                 </div>
@@ -172,7 +172,7 @@
                 <h4>Dispositivo</h4>
                 <div class="form-group">
                     <label class="form-label">Selecciona dispositivo</label>
-                    <select class="form-select" id="dispositivo">
+                    <select class="form-select" id="device">
                         <option selected>Seleccione un dispositivo</option>
                     </select>
                 </div>
@@ -184,7 +184,7 @@
                     </select>
                 </div>
 
-                <!-- Tabla de dispositivos asignados -->
+                <!-- Table of assigned devices -->
                 <h4>Lista de Dispositivos Asignados</h4>
                 <table class="table table-bordered">
                     <thead>
@@ -194,12 +194,12 @@
                             <th>Número de Serie</th>
                         </tr>
                     </thead>
-                    <tbody id="tablaDispositivos">
-                        <!-- Se llenará dinámicamente -->
+                    <tbody id="assignedDevicesTable">
+                        <!-- To be dynamically populated -->
                     </tbody>
                 </table>
 
-                <!-- Botón de envío -->
+                <!-- Submit button -->
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Asignar Dispositivos</button>
                 </div>
@@ -207,22 +207,22 @@
         </div>
     </main>
 
-    <!-- Pie de página -->
+    <!-- Footer -->
     <footer class="footer">
         &copy; 2025 Mi Aplicación. Todos los derechos reservados.
     </footer>
 
     <script>
         /**
-         * Maneja el evento de pérdida de foco en el campo de User ID.
-         * Realiza una solicitud a la API para obtener los datos del usuario.
+         * Handles the blur event on the User ID field.
+         * Makes a request to the API to fetch user data.
          */
         document.getElementById('userId').addEventListener('blur', function() {
             let userId = this.value.trim();
             let errorMessage = document.getElementById('error-message');
 
             if (userId === '') {
-                limpiarCampos();
+                clearFields();
                 return;
             }
 
@@ -236,9 +236,11 @@
                     return response.json();
                 })
                 .then(data => {
-                    document.getElementById('nombre').value = data.Name || '';
-                    document.getElementById('correo').value = data.Email || '';
-                    document.getElementById('ubicacion').value = data.Location || '';
+                    console.log("Datos recibidos:", data); // Agregar esta línea para ver la respuesta en la consola
+
+                    document.getElementById('name').value = data.Name || '';
+                    document.getElementById('email').value = data.Email || '';
+                    document.getElementById('location').value = data.Location || '';
                     document.getElementById('callCenter').value = data.CallCenter || '';
                     document.getElementById('position').value = data.Position || '';
                     document.getElementById('supervisor').value = data.Supervisor || '';
@@ -248,7 +250,7 @@
                 .catch(() => {
                     errorMessage.style.display = 'block';
                     setTimeout(() => errorMessage.style.display = "none", 3000);
-                    limpiarCampos();
+                    clearFields();
                 });
         });
     </script>
