@@ -1,8 +1,7 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\AsignacionController;
+use App\Http\Controllers\EndUserController;
+use App\Http\Controllers\DeviceAssignmentController;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -12,72 +11,72 @@ use Illuminate\Support\Facades\Auth;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Aquí se registran las rutas web de la aplicación.
-| Se definen rutas para autenticación con Google, manejo de sesiones
-| y consulta de usuarios, entre otros.
+| This file registers the web routes of the application.
+| It defines routes for Google authentication, session management,
+| and user data retrieval, among other functionalities.
 |
 */
 
 /**
- * Ruta de inicio.
- * Carga la vista de bienvenida.
+ * Home route.
+ * Loads the welcome view.
  */
 Route::get('/', function () {
     return view('welcome');
 });
 
 /**
- * Redirección a Google para autenticación con OAuth2.
- * Usa Socialite para manejar la autenticación con Google.
+ * Redirects to Google for authentication using OAuth2.
+ * Uses Socialite to handle the Google authentication process.
  */
 Route::get('/auth/redirect/google', function () {
     return Socialite::driver('google')->redirect();
 });
 
 /**
- * Callback de Google después de la autenticación.
- * Obtiene los datos del usuario autenticado y lo registra en la base de datos si no existe.
- * Luego, lo autentica en la sesión de Laravel y lo redirige al dashboard.
+ * Callback route after Google authentication.
+ * Retrieves authenticated user data, registers them in the database if they do not exist,
+ * and logs them into the Laravel session before redirecting them to the dashboard.
  */
 Route::get('/auth/callback/google', function () {
     try {
-        // Obtener datos del usuario autenticado en Google
+        // Retrieve authenticated user data from Google
         $googleUser = Socialite::driver('google')->user();
 
-        // Buscar o crear el usuario en la base de datos
+        // Find or create the user in the database
         $user = User::firstOrCreate(
-            ['email' => $googleUser->getEmail()], // Criterio de búsqueda
+            ['email' => $googleUser->getEmail()], // Search criteria
             [
                 'name' => $googleUser->getName(),
                 'google_id' => $googleUser->getId(),
-                'password' => bcrypt('default_password'), // Contraseña por defecto (no usada)
+                'password' => bcrypt('default_password'), // Default password (not used)
             ]
         );
 
-        // Iniciar sesión en Laravel con el usuario autenticado
+        // Log the user into Laravel
         Auth::login($user);
 
-        // Redirigir al dashboard
+        // Redirect to the dashboard
         return redirect('/dashboard');
 
     } catch (\Exception $e) {
-        return redirect('/')->with('error', 'Error al autenticar con Google.');
+        return redirect('/')->with('error', 'Error authenticating with Google.');
     }
 });
 
 /**
- * Ruta del Dashboard.
- * Solo accesible para usuarios autenticados.
+ * Dashboard route.
+ * Accessible only to authenticated users.
  */
 Route::get('/dashboard', function () {
     if (Auth::check()) {
-        return "Bienvenido, " . Auth::user()->name . "!";
+        return "Welcome, " . Auth::user()->name . "!";
     }
     return redirect('/');
 })->middleware('auth');
 
 /**
- * Cierra la sesión del usuario y lo redirige a la página de inicio.
+ * Logs out the user and redirects them to the homepage.
  */
 Route::get('/logout', function () {
     Auth::logout();
@@ -85,29 +84,43 @@ Route::get('/logout', function () {
 });
 
 /**
- * Ruta de la vista de administrador.
- * Solo carga la vista sin consultar la base de datos.
+ * Admin panel route.
+ * Loads the administrator view without querying the database.
  */
 Route::get('/admin', function () {
     return view('admi');
 });
 
 /**
- * Obtiene un usuario desde la API por su ID.
- * Llama al método `getUserById` en `UserController`.
+ * Retrieves a user from the API by their ID.
+ * Calls the `getUserById` method in `EndUserController`.
  */
-Route::get('/SnowGetUserId', [UserController::class, 'getUserById']);
+Route::get('/SnowGetUserId', [EndUserController::class, 'getUserById']);
 
 /**
- * Obtiene un usuario específico por su ID desde la base de datos.
- * Llama al método `getUsuario` en `AsignacionController`.
+ * Retrieves a specific user from the database by their ID.
+ * Calls the `getUser` method in `DeviceAssignmentController`.
  */
-Route::get('/usuario/{id}', [AsignacionController::class, 'getUsuario']);
+Route::get('/user/{id}', [DeviceAssignmentController::class, 'getUser']);
 
 /**
- * Ruta para la vista de asignación de equipos.
- * Solo carga la vista sin interactuar con la base de datos.
+ * Route for the equipment assignment view.
+ * Loads the assignment view without database interaction.
  */
-Route::get('/asignacion', function () {
+Route::get('/assignment', function () {
     return view('admi');
+});
+
+/**
+ * Route for the DSS user interface.
+ */
+Route::get('/dss', function () {
+    return view('dss');
+});
+
+/**
+ * Route for the regular user interface.
+ */
+Route::get('/user', function () {
+    return view('user');
 });

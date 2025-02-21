@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de Sesión</title>
 
-    <!-- Importación de Bootstrap desde CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <!-- Importing Bootstrap from local files -->
+    <link href="{{ asset('bootstrap.min.css') }}" rel="stylesheet">
     <style>
-        /* Configuración general del cuerpo */
+        /* General body styling */
         body {
             display: flex;
             flex-direction: column;
@@ -17,7 +16,7 @@
             background-color: #d6d6d6;
         }
 
-        /* Estilos del encabezado */
+        /* Header styles */
         .header {
             background-color: #f8f9fa;
             padding: 15px;
@@ -34,7 +33,7 @@
             height: 50px;
         }
 
-        /* Contenedor principal del contenido */
+        /* Main content container */
         .content {
             flex: 1;
             display: flex;
@@ -44,7 +43,7 @@
             padding-bottom: 40px;
         }
 
-        /* Caja de inicio de sesión */
+        /* Login box */
         .login-box {
             background: white;
             padding: 30px;
@@ -53,7 +52,7 @@
             text-align: center;
         }
 
-        /* Pie de página */
+        /* Footer */
         .footer {
             background-color: #343a40;
             color: white;
@@ -61,7 +60,7 @@
             padding: 15px;
         }
 
-        /* Estilos del botón de Google */
+        /* Google login button styling */
         .google-btn {
             background-color: #4285F4;
             color: white;
@@ -82,7 +81,7 @@
 </head>
 <body>
 
-    <!-- Encabezado con logotipo y menú de navegación -->
+    <!-- Header with logo and navigation menu -->
     <header class="header">
         <img src="{{ asset('img/logo.jpg') }}" alt="Logo">
 
@@ -93,7 +92,7 @@
         </nav>
     </header>
 
-    <!-- Contenido principal con la caja de inicio de sesión -->
+    <!-- Main content with login box -->
     <main class="content">
         <div class="login-box">
             <h2>Bienvenido</h2>
@@ -104,14 +103,15 @@
         </div>
     </main>
 
-    <!-- Pie de página -->
+    <!-- Footer -->
     <footer class="footer">
         &copy; 2025 Mi Aplicación. Todos los derechos reservados.
     </footer>
 
-    <!-- Importación del script de Bootstrap desde CDN -->
+    <!-- Import Bootstrap script from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
+
 

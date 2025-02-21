@@ -16,13 +16,14 @@ class EndUserController extends Controller
      * This method searches for a user in the database and returns their data in JSON format.
      * 
      * @param int $id The ID of the user to retrieve.
-     * @return \Illuminate\Http\JsonResponse JSON response with user information,
-     *                                      or `null` if the user does not exist.
+     * @return \Illuminate\Http\JsonResponse JSON response containing the user's information,
+     *                                       or `null` if the user does not exist.
      */
-    public function getUser($id) 
+    public function getUserById($id) 
     {
         $user = EndUser::find($id);
 
         return response()->json($user);
     }
 }
+
